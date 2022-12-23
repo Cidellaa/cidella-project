@@ -33,6 +33,6 @@ public class Idle : MonoBehaviour
 
     private void MoveRigidbody()
     {
-        rb.velocity = Vector2.zero;
+        rb.velocity = new(0f, rb.velocity.y);
     }
 }
