@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Player))]
@@ -7,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpForce;
 
     private Player player;
 
@@ -18,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         MovementInput();
+        JumpInput();
     }
 
     private void MovementInput()
@@ -32,4 +32,11 @@ public class PlayerController : MonoBehaviour
             player.idleEvent.CallIdleEvent();
     }
 
+    private void JumpInput()
+    {
+        if (Input.GetButtonDown("Jump") && player.OnGround())
+        {
+            player.movementByForceEvent.CallMovementByForceEvent(Vector2.up, jumpForce);
+        }
+    }
 }

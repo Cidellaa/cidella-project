@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MovementByVelocityEvent))]
@@ -29,10 +27,19 @@ public class MovementByVelocity : MonoBehaviour
     private void MovementByVelocityEvent_OnMovementByVelocity(MovementByVelocityEvent movementByVelocityEvent, MovementByVelocityEventArgs movementByVelocityEventArgs)
     {
         MoveRigidbody(movementByVelocityEventArgs.speed, movementByVelocityEventArgs.direction);
+        Flip(movementByVelocityEventArgs.direction);
     }
 
-    public void MoveRigidbody(float speed, float direction)
+    private void MoveRigidbody(float speed, float direction)
     {
         rb.velocity = new(speed * direction, rb.velocity.y);
+    }
+
+    private void Flip(float direction)
+    {
+        if (direction >= 0.1f)
+            transform.localScale = Vector3.one;
+        else if (direction <= -0.1f)
+            transform.localScale = new(-1, 1, 1);
     }
 }
