@@ -12,6 +12,38 @@ public class UIController : MonoBehaviour
     [SerializeField] private CanvasGroup fadeScreen_2;
     [SerializeField] private RectTransform pausePanel;
 
+    [SerializeField] private Player player;
+
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
+
+    private void OnEnable()
+    {
+        player.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyed;
+    }
+
+    private void OnDisable()
+    {
+        player.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyed;
+    }
+
+    private void DestroyedEvent_OnDestroyed(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
+    {
+        StartCoroutine(FadeOutScreen());
+    }
+
+    private IEnumerator FadeOutScreen()
+    {
+        fadeScreen_2.DOFade(1f, 4f);
+        GameManager.Instance.GetPlayer().playerController.DisablePlayer();
+        yield return new WaitForSeconds(4f);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+
     #region Buttons' OnClick Methods
     #region PAUSE
     public void Pause()

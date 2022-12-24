@@ -1,18 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RangeAttackEvent : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public event Action<RangeAttackEvent, RangeAttackEventArgs> OnRangeAttack;
 
-    // Update is called once per frame
-    void Update()
+    public void CallRangeAttackEvent(GameObject prefab, Transform attackPosition, Vector2 direction, float speed)
     {
-        
+        OnRangeAttack?.Invoke(this, new RangeAttackEventArgs { prefab = prefab, attackPosition = attackPosition, direction = direction , speed = speed});
     }
+}
+
+public class RangeAttackEventArgs : EventArgs
+{
+    public GameObject prefab;
+    public Transform attackPosition;
+    public Vector2 direction;
+    public float speed;
 }

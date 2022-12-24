@@ -16,13 +16,16 @@ public class AnimatePlayer : MonoBehaviour
         player.idleEvent.OnIdle += IdleEvent_OnIdle;
         player.movementByVelocityEvent.OnMovementByVelocity += MovementByVelocityEvent_OnMovementByVelocity;
         player.movementByForceEvent.OnMovementByForce += MovementByForceEvent_OnMovementByForce;
+        player.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyed;
     }
+
 
     private void OnDisable()
     {
         player.idleEvent.OnIdle -= IdleEvent_OnIdle;
         player.movementByVelocityEvent.OnMovementByVelocity -= MovementByVelocityEvent_OnMovementByVelocity;
         player.movementByForceEvent.OnMovementByForce -= MovementByForceEvent_OnMovementByForce;
+        player.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyed;
     }
 
     private void IdleEvent_OnIdle(IdleEvent idleEvent)
@@ -38,6 +41,11 @@ public class AnimatePlayer : MonoBehaviour
     private void MovementByForceEvent_OnMovementByForce(MovementByForceEvent movementByForceEvent, MovementByForceEventArgs movementByForceEventArgs)
     {
         SetMovementByForceAnimationParameters();
+    }
+    
+    private void DestroyedEvent_OnDestroyed(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
+    {
+        SetDeathAnimationParameters();
     }
 
     private void SetIdleAnimationParameters()
@@ -70,5 +78,13 @@ public class AnimatePlayer : MonoBehaviour
         player.anim.SetBool(Settings.isIdle, false);
         player.anim.SetBool(Settings.isMoving, false);
         player.anim.SetBool(Settings.isJumping, true);
+    }
+
+    private void SetDeathAnimationParameters()
+    {
+        player.anim.SetBool(Settings.isIdle, false);
+        player.anim.SetBool(Settings.isMoving, false);
+        player.anim.SetBool(Settings.isJumping, false);
+        player.anim.SetBool(Settings.isDead, true);
     }
 }
