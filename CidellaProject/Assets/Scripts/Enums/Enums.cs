@@ -2,7 +2,7 @@ public enum GameState
 {
     GameStarted,
     GamePaused,
-    GameEnded,
+    BossStage,
     GameLost,
     GameWon,
     Dialogue
@@ -10,7 +10,10 @@ public enum GameState
 
 public enum BossState
 {
+    Dialogue,
     Idle,
+    FollowPlayer,
+    MeleeAttack,
     RangeAttack,
     BigCandiesAttack,
     CallElves,
@@ -20,5 +23,6 @@ public enum BossState
 public enum EnemyState
 {
     Walk,
-    Attack
+    Attack,
+    Death
 }
