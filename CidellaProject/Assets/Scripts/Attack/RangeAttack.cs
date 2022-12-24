@@ -31,6 +31,7 @@ public class RangeAttack : MonoBehaviour
     private void InstantiateObject(GameObject prefab, Transform attackPosition, Vector2 direction, float speed)
     {
         GameObject go = Instantiate(prefab, attackPosition.position, Quaternion.identity);
+        go.transform.localScale = direction;
         go.GetComponent<Rigidbody2D>().velocity = new(transform.localScale.x * speed, 0f);
     }
 }

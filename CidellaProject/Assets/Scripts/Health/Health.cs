@@ -10,7 +10,7 @@ public class Health : MonoBehaviour
     public int currentHealth;
 
     [SerializeField] private bool isPlayer;
-    private bool isDamageable;
+    private bool isDamageable = true;
 
     private bool isImmuneAfterHit;
     [SerializeField] private int immunityTime = 3;
@@ -33,6 +33,7 @@ public class Health : MonoBehaviour
     private void Start()
     {
         currentHealth = startingHealth;
+        isDamageable = true;
     }
 
     private void Update()

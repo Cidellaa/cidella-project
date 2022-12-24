@@ -16,6 +16,8 @@ public class AnimatePlayer : MonoBehaviour
         player.idleEvent.OnIdle += IdleEvent_OnIdle;
         player.movementByVelocityEvent.OnMovementByVelocity += MovementByVelocityEvent_OnMovementByVelocity;
         player.movementByForceEvent.OnMovementByForce += MovementByForceEvent_OnMovementByForce;
+        player.meleeAttackEvent.OnMeleeAttack += MeleeAttackEvent_OnMeleeAttack;
+        player.rangeAttackEvent.OnRangeAttack += RangeAttackEvent_OnRangeAttack;
         player.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyed;
     }
 
@@ -25,6 +27,8 @@ public class AnimatePlayer : MonoBehaviour
         player.idleEvent.OnIdle -= IdleEvent_OnIdle;
         player.movementByVelocityEvent.OnMovementByVelocity -= MovementByVelocityEvent_OnMovementByVelocity;
         player.movementByForceEvent.OnMovementByForce -= MovementByForceEvent_OnMovementByForce;
+        player.meleeAttackEvent.OnMeleeAttack -= MeleeAttackEvent_OnMeleeAttack;
+        player.rangeAttackEvent.OnRangeAttack -= RangeAttackEvent_OnRangeAttack;
         player.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyed;
     }
 
@@ -41,6 +45,16 @@ public class AnimatePlayer : MonoBehaviour
     private void MovementByForceEvent_OnMovementByForce(MovementByForceEvent movementByForceEvent, MovementByForceEventArgs movementByForceEventArgs)
     {
         SetMovementByForceAnimationParameters();
+    }
+
+    private void MeleeAttackEvent_OnMeleeAttack(MeleeAttackEvent meleeAttackEvent, MeleeAttackEventArgs meleeAttackEventArgs)
+    {
+        SetMeleeAttackAnimationParameters();
+    }
+   
+    private void RangeAttackEvent_OnRangeAttack(RangeAttackEvent rangeAttackEvent, RangeAttackEventArgs rangeAttackEventArgs)
+    {
+        SetRangeAttackAnimationParameters();
     }
     
     private void DestroyedEvent_OnDestroyed(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
@@ -78,6 +92,22 @@ public class AnimatePlayer : MonoBehaviour
         player.anim.SetBool(Settings.isIdle, false);
         player.anim.SetBool(Settings.isMoving, false);
         player.anim.SetBool(Settings.isJumping, true);
+    }
+
+    private void SetMeleeAttackAnimationParameters()
+    {
+        player.anim.SetBool(Settings.isIdle, false);
+        player.anim.SetBool(Settings.isMoving, false);
+        player.anim.SetBool(Settings.isJumping, false);
+        player.anim.SetTrigger(Settings.isMeleeAttacking);
+    }
+
+    private void SetRangeAttackAnimationParameters()
+    {
+        player.anim.SetBool(Settings.isIdle, false);
+        player.anim.SetBool(Settings.isMoving, false);
+        player.anim.SetBool(Settings.isJumping, false);
+        player.anim.SetTrigger(Settings.isRangeAttacking);
     }
 
     private void SetDeathAnimationParameters()
