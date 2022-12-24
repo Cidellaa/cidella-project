@@ -5,7 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float moveSpeedInAir;
     [SerializeField] private float jumpForce;
+
+    private bool isPlayerMovementDisabled;
 
     private Player player;
 
@@ -16,8 +19,20 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (isPlayerMovementDisabled) return;
+
         MovementInput();
         JumpInput();
+    }
+
+    public void EnablePlayer()
+    {
+        isPlayerMovementDisabled = true;
+    }
+
+    public void DisablePlayer()
+    {
+        isPlayerMovementDisabled = true;
     }
 
     private void MovementInput()
@@ -26,7 +41,10 @@ public class PlayerController : MonoBehaviour
 
         if (horizontalMovement != 0)
         {
-            player.movementByVelocityEvent.CallMovementByVelocityEvent(moveSpeed, horizontalMovement);
+            if(player.OnGround())
+                player.movementByVelocityEvent.CallMovementByVelocityEvent(moveSpeed, horizontalMovement);
+            else
+                player.movementByVelocityEvent.CallMovementByVelocityEvent(moveSpeedInAir, horizontalMovement);
         }
         else
             player.idleEvent.CallIdleEvent();

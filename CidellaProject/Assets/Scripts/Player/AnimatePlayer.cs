@@ -15,6 +15,7 @@ public class AnimatePlayer : MonoBehaviour
     {
         player.idleEvent.OnIdle += IdleEvent_OnIdle;
         player.movementByVelocityEvent.OnMovementByVelocity += MovementByVelocityEvent_OnMovementByVelocity;
+        player.movementByForceEvent.OnMovementByForce += MovementByForceEvent_OnMovementByForce;
     }
 
     private void OnDisable()

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+#region REQUIRE COMPONENTS
 [RequireComponent(typeof(Idle))]
 [RequireComponent(typeof(IdleEvent))]
 [RequireComponent(typeof(MovementByVelocity))]
@@ -9,6 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AnimatePlayer))]
 [DisallowMultipleComponent]
+#endregion
 public class Player : MonoBehaviour
 {
     [HideInInspector] public IdleEvent idleEvent;
