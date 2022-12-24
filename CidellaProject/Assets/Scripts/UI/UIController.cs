@@ -12,7 +12,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private CanvasGroup fadeScreen_2;
     [SerializeField] private RectTransform pausePanel;
 
-    #region BUTTON ONCLICK METHODS
+    #region Buttons' OnClick Methods
     #region PAUSE
     public void Pause()
     {

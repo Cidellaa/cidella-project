@@ -42,8 +42,12 @@ public class AnimatePlayer : MonoBehaviour
 
     private void SetIdleAnimationParameters()
     {
-        if (!player.OnGround()) return;
-
+        if (!player.OnGround())
+        {
+            Debug.Log("Jump");
+            SetMovementByForceAnimationParameters();
+            return;
+        }
         player.anim.SetBool(Settings.isMoving, false);
         player.anim.SetBool(Settings.isJumping, false);
         player.anim.SetBool(Settings.isIdle, true);
@@ -53,7 +57,7 @@ public class AnimatePlayer : MonoBehaviour
     {
         if (!player.OnGround())
         {
-            Debug.Log("Jumping");
+            SetMovementByForceAnimationParameters();
             return;
         }
         player.anim.SetBool(Settings.isIdle, false);
