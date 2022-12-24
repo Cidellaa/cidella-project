@@ -10,6 +10,7 @@ public static class Settings
     public static int isMoving = Animator.StringToHash("isMoving");
     public static int isJumping = Animator.StringToHash("isJumping");
     public static int isAttacking = Animator.StringToHash("isAttacking");
+    public static int isDead = Animator.StringToHash("isDead");
     #endregion
     #endregion
 }

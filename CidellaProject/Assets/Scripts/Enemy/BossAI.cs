@@ -20,6 +20,14 @@ public class BossAI : MonoBehaviour
     [SerializeField] private Transform candiesPlaces;
     private float bigCandyAttackTimer = 10f;
 
+    #region RANGE ATTACK
+    [Space(10)]
+    [Header("RANGE ATTACK")]
+    #endregion
+    [SerializeField] private GameObject rangeWeaponPrefab;
+    [SerializeField] private Transform rangeAttackPosition;
+    [SerializeField] private float rangeWeaponSpeed = 13f;
+
     private Boss boss;
     [SerializeField] private BossState bossState = BossState.Idle; // DELETE SERIALIZEFIELD LATER!!
 
@@ -42,7 +50,7 @@ public class BossAI : MonoBehaviour
                 break;
             
             case BossState.RangeAttack:
-            
+                boss.rangeAttackEvent.CallRangeAttackEvent(rangeWeaponPrefab, rangeAttackPosition, transform.localScale, rangeWeaponSpeed);
                 break;
             
             case BossState.BigCandiesAttack:
