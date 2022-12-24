@@ -29,15 +29,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float meleeAttackRadius;
     [SerializeField] private LayerMask whatIsEnemy;
 
-    private readonly float attackWaitTimer = .75f;
+    private readonly float attackWaitTimer = .4f;
 
     private bool isPlayerMovementDisabled;
 
     private Player player;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
         player = GetComponent<Player>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour
 
     public void DisablePlayer()
     {
+        rb.velocity = Vector2.zero;
         isPlayerMovementDisabled = true;
     }
 

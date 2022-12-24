@@ -20,7 +20,7 @@ public class BossAI : MonoBehaviour
     [SerializeField] private Transform candiesPlaces;
     private float bigCandyAttackTimer = 10f;
 
-    #region RANGE ATTACK
+    #region Header RANGE ATTACK
     [Space(10)]
     [Header("RANGE ATTACK")]
     #endregion
@@ -29,11 +29,21 @@ public class BossAI : MonoBehaviour
     [SerializeField] private float rangeWeaponSpeed = 13f;
     private float rangeAttackTimer = 3f;
 
+    #region Header MELEE ATTACK
+    [Space(10)]
+    [Header("MELEE ATTACK")]
+    #endregion
+    [SerializeField] private Transform meleeAttackPosition;
+    [SerializeField] private float meleeAttackRadius;
+    [SerializeField] private LayerMask whatIsEnemy;
+
     #region Header MOVEMENT
     [Space(10)]
     [Header("MOVEMENT")]
     #endregion
     [SerializeField] private float moveSpeed = 15f;
+
+    private bool isAttacking;
 
     private Boss boss;
     [SerializeField] private BossState bossState = BossState.Idle; // DELETE SERIALIZEFIELD LATER!!
@@ -69,28 +79,31 @@ public class BossAI : MonoBehaviour
                 break;
 
             case BossState.FollowPlayer:
+                if (CheckAttacks()) break;
                 FollowPlayer();
-                CheckAttacks();
                 break;
 
             case BossState.MeleeAttack:
-                
+
+                if (!isAttacking) StartCoroutine(MeleeAttackRoutine());
                 break;
 
             case BossState.RangeAttack:
-                StartCoroutine(RangeAttackRoutine());
+                if (!isAttacking) StartCoroutine(RangeAttackRoutine());
                 break;
-            
+
             case BossState.BigCandiesAttack:
                 StartCoroutine(BigCandiesAttackRoutine());
+                if (!isAttacking) StartCoroutine(BigCandiesAttackRoutine());
                 break;
-            
+
             case BossState.CallElves:
                 StartCoroutine(CallElvesRoutine());
+                if (!isAttacking) StartCoroutine(CallElvesRoutine());
                 break;
-            
+
             case BossState.Death:
-            
+
                 break;
         }
     }
@@ -110,56 +123,78 @@ public class BossAI : MonoBehaviour
         return Vector3.Distance(player.position, transform.position) > .8f;
     }
 
+    private IEnumerator MeleeAttackRoutine()
+    {
+        isAttacking = true;
+        boss.idleEvent.CallIdleEvent();
+        yield return new WaitForSeconds(.75f);
+        boss.meleeAttackEvent.CallMeleeAttack(meleeAttackPosition, meleeAttackRadius, whatIsEnemy);
+        yield return new WaitForSeconds(.6f);
+        bossState = BossState.Idle;
+        isAttacking = false;
+    }
+
     private IEnumerator RangeAttackRoutine()
     {
-        bossState = BossState.Idle;
+        isAttacking = true;
         boss.idleEvent.CallIdleEvent();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.75f);
         boss.rangeAttackEvent.CallRangeAttackEvent(rangeWeaponPrefab, rangeAttackPosition, transform.localScale, rangeWeaponSpeed);
         yield return new WaitForSeconds(.7f);
+        bossState = BossState.Idle;
+        isAttacking = false;
     }
 
     private IEnumerator BigCandiesAttackRoutine()
     {
-        bossState = BossState.Idle;
+        isAttacking = true;
         boss.idleEvent.CallIdleEvent();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.75f);
         boss.callSomethingEvent.CallCallSomethingEvent(candyPrefab, candiesPlaces);
         yield return new WaitForSeconds(1.125f);
+        bossState = BossState.Idle;
+        isAttacking = false;
     }
 
     private IEnumerator CallElvesRoutine()
     {
-        bossState = BossState.Idle;
+        isAttacking = true;
         boss.idleEvent.CallIdleEvent();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.75f);
         boss.callSomethingEvent.CallCallSomethingEvent(elfPrefab, elvesPlaces);
         yield return new WaitForSeconds(1.125f);
+        bossState = BossState.Idle;
+        isAttacking = false;
     }
 
     #region Attack Checks
-    private void CheckAttacks()
+    private bool CheckAttacks()
     {
         if (CheckRangeAttack())
         {
             bossState = BossState.RangeAttack;
             rangeAttackTimer = Random.Range(1.5f, 3.5f);
+            return true;
         }
         else if (CheckBigCandiesAttack())
         {
             bossState = BossState.BigCandiesAttack;
-            bigCandyAttackTimer = Random.Range(7f, 13f);
+            bigCandyAttackTimer = Random.Range(5f, 7f);
+            return true;
         }
         else if (CheckCallElves())
         {
             bossState = BossState.CallElves;
-            callElvesTimer = Random.Range(7f, 13f);
+            callElvesTimer = Random.Range(7f, 10f);
+            return true;
         }
+        return false;
     }
 
     private bool CheckRangeAttack()
     {
         rangeAttackTimer -= Time.deltaTime;
+
         return rangeAttackTimer <= 0f;
     }
 

@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -12,21 +10,30 @@ public class UIController : MonoBehaviour
     [SerializeField] private CanvasGroup fadeScreen_2;
     [SerializeField] private RectTransform pausePanel;
 
-    [SerializeField] private Player player;
+    private Player player;
+    private Boss boss;
 
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        boss = GameObject.FindGameObjectWithTag("Boss").GetComponent<Boss>();
     }
 
     private void OnEnable()
     {
         player.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyed;
+        boss.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyedBoss;
     }
 
     private void OnDisable()
     {
         player.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyed;
+        boss.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyedBoss;
+    }
+
+    private void DestroyedEvent_OnDestroyedBoss(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
+    {
+        StartCoroutine(GameWon());
     }
 
     private void DestroyedEvent_OnDestroyed(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
@@ -43,6 +50,14 @@ public class UIController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    private IEnumerator GameWon()
+    {
+        fadeScreen_2.DOFade(1f, 4f);
+        GameManager.Instance.GetPlayer().playerController.DisablePlayer();
+        yield return new WaitForSeconds(4f);
+
+        SceneManager.LoadScene("EndingScene");
+    }
 
     #region Buttons' OnClick Methods
     #region PAUSE

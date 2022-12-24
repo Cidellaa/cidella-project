@@ -6,18 +6,25 @@ using DG.Tweening;
 public class BigCandy : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 15f;
-    private Rigidbody2D rb;
+
     private Transform boss;
-    
+    private bool wasCollided;
+
+    private Rigidbody2D rb;
+    private Collider2D col;
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
     }
 
     private void Start()
     {
         boss = GameObject.FindGameObjectWithTag("Boss").transform;
         StartCoroutine(StartFalling());
+        Destroy(gameObject, 7f);
     }
 
     private IEnumerator StartFalling()
@@ -31,5 +38,15 @@ public class BigCandy : MonoBehaviour
             yield return null;
         }
         rb.velocity = Vector2.zero;
+        col.enabled = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!wasCollided && collision.TryGetComponent<Health>(out Health health))
+        {
+            health.TakeDamage(2);
+            wasCollided = true;
+        }
     }
 }
