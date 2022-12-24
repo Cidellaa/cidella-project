@@ -25,7 +25,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform groundCheckPosition;
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private LayerMask whatIsGround;
-    public bool onGround;
     
     private void Awake()
     {
@@ -35,18 +34,8 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    private void Update()
-    {
-        onGround = OnGround();
-    }
-
     public bool OnGround()
     {
         return Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, whatIsGround);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(groundCheckPosition.position, groundCheckRadius);
     }
 }

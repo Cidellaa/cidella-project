@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - UI
   - Ground
   - Player
-  - 
-  - 
+  - EnemyWeapon
+  - Enemy
   - 
   - 
   - 
@@ -49,9 +50,6 @@ TagManager:
     locked: 0
   - name: Instances
     uniqueID: 3126175515
-    locked: 0
-  - name: New Layer 5
-    uniqueID: 2352535181
     locked: 0
   - name: Midground
     uniqueID: 2534032537

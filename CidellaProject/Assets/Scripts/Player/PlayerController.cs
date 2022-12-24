@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if (isPlayerMovementDisabled) return;
-        Debug.Log(player.OnGround());
         MovementInput();
         JumpInput();
     }
@@ -47,9 +46,7 @@ public class PlayerController : MonoBehaviour
                 player.movementByVelocityEvent.CallMovementByVelocityEvent(moveSpeedInAir, horizontalMovement);
         }
         else
-        {
-            if (!player.OnGround()) return;
-            
+        {   
             player.idleEvent.CallIdleEvent();
         }
     }
