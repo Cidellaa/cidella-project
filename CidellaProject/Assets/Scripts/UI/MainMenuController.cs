@@ -66,6 +66,7 @@ public class MainMenuController : MonoBehaviour
     }
 
     #region Buttons' OnClick Methods
+
     #region Play Button
     public void Play()
     {
@@ -74,6 +75,7 @@ public class MainMenuController : MonoBehaviour
 
     private IEnumerator PlayRoutine()
     {
+        SoundEffectManager.Instance.PlaySoundEffect(0, 1f);
         fadeScreen.blocksRaycasts = true;
         fadeScreen.DOFade(1f, fadeTimer);
         yield return new WaitForSeconds(fadeTimer);
@@ -111,6 +113,7 @@ public class MainMenuController : MonoBehaviour
 
     private IEnumerator QuitRoutine()
     {
+        SoundEffectManager.Instance.PlaySoundEffect(0, 1f);
         fadeScreen.blocksRaycasts = true;
         fadeScreen.DOFade(1f, fadeTimer);
         yield return new WaitForSeconds(fadeTimer);
@@ -130,6 +133,7 @@ public class MainMenuController : MonoBehaviour
 
     private IEnumerator BackRoutine(RectTransform panel)
     {
+        SoundEffectManager.Instance.PlaySoundEffect(0, 1f);
         panel.DOScale(0f, panelTimer);
         fadeScreen.DOFade(0f, panelTimer);
         yield return new WaitForSeconds(panelTimer);
@@ -141,6 +145,7 @@ public class MainMenuController : MonoBehaviour
     #region Panel
     private IEnumerator OpenPanelRoutine(RectTransform panel)
     {
+        SoundEffectManager.Instance.PlaySoundEffect(0, 1f);
         panel.gameObject.SetActive(true);
         yield return null;
         
@@ -149,5 +154,6 @@ public class MainMenuController : MonoBehaviour
         panel.DOScale(1f, panelTimer).SetEase(Ease.OutQuint);
     }
     #endregion
+
     #endregion
 }

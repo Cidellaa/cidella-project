@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Player
   - 
   - 
   - 
@@ -44,12 +44,15 @@ TagManager:
   - name: Background
     uniqueID: 949498543
     locked: 0
-  - name: Midground
-    uniqueID: 2534032537
-    locked: 0
   - name: Environment
     uniqueID: 1652522961
     locked: 0
   - name: Instances
     uniqueID: 3126175515
+    locked: 0
+  - name: New Layer 5
+    uniqueID: 2352535181
+    locked: 0
+  - name: Midground
+    uniqueID: 2534032537
     locked: 0
