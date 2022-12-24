@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Player))]
@@ -12,13 +13,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeedInAir;
     [SerializeField] private float jumpForce;
 
-    #region Header ATTACK
+    #region Header RANGE ATTACK
     [Space(10)]
-    [Header("ATTACK")]
+    [Header("RANGE ATTACK")]
     #endregion
     [SerializeField] private GameObject rangeWeaponPrefab;
     [SerializeField] private Transform rangeWeaponPosition;
     [SerializeField] private float rangeWeaponSpeed = 12f;
+
+    #region Header ATTACK
+    [Space(10)]
+    [Header("ATTACK")]
+    #endregion
+    [SerializeField] private Transform meleeAttackPosition;
+    [SerializeField] private float meleeAttackRadius;
+    [SerializeField] private LayerMask whatIsEnemy;
+
+    private readonly float attackWaitTimer = .75f;
 
     private bool isPlayerMovementDisabled;
 
@@ -39,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
     public void EnablePlayer()
     {
-        isPlayerMovementDisabled = true;
+        isPlayerMovementDisabled = false;
     }
 
     public void DisablePlayer()
@@ -81,12 +92,35 @@ public class PlayerController : MonoBehaviour
         {
             if (leftMouseButtonDown)
             {
-
+                StartCoroutine(MeleeAttackRoutine());
             }
             else if (rightMouseButtonDown)
             {
-                player.rangeAttackEvent.CallRangeAttackEvent(rangeWeaponPrefab, rangeWeaponPosition, transform.localScale, rangeWeaponSpeed);
+                StartCoroutine(RangeAttackRoutine());
             }
         }
+    }
+
+    private IEnumerator MeleeAttackRoutine()
+    {
+        DisablePlayer();
+        player.meleeAttackEvent.CallMeleeAttack(meleeAttackPosition, meleeAttackRadius, whatIsEnemy);
+        yield return new WaitForSeconds(attackWaitTimer);
+
+        EnablePlayer();
+    }
+
+    private IEnumerator RangeAttackRoutine()
+    {
+        DisablePlayer();
+        player.rangeAttackEvent.CallRangeAttackEvent(rangeWeaponPrefab, rangeWeaponPosition, transform.localScale, rangeWeaponSpeed);
+        yield return new WaitForSeconds(attackWaitTimer);
+
+        EnablePlayer();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(meleeAttackPosition.position, meleeAttackRadius);
     }
 }
