@@ -42,6 +42,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private LayerMask whatIsGround;
 
+    [Space(10)]
+    public int candyCount = 3;
+
     private int currentHealth;
 
     private void Awake()

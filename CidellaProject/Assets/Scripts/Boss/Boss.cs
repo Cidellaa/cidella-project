@@ -30,6 +30,7 @@ public class Boss : MonoBehaviour
     [HideInInspector] public HealthEvent healthEvent;
     [HideInInspector] public Animator anim;
     [HideInInspector] public BossAI bossAI;
+    [HideInInspector] public int currentHealth;
 
     private void Awake()
     {
@@ -56,10 +57,16 @@ public class Boss : MonoBehaviour
 
     private void HealthEvent_OnHealthChanged(HealthEvent healthEvent, HealthEventArgs healthEventArgs)
     {
+        currentHealth = healthEventArgs.healthAmount;
         if (healthEventArgs.healthAmount <= 0)
         {
             destroyedEvent.CallDestroyedEvent(true);
             bossAI.DisableBoss();
         }
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 }

@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(MeleeAttackRoutine());
             }
-            else if (rightMouseButtonDown)
+            else if (rightMouseButtonDown && player.candyCount > 0)
             {
                 StartCoroutine(RangeAttackRoutine());
             }
@@ -119,6 +119,7 @@ public class PlayerController : MonoBehaviour
     {
         DisablePlayer();
         player.rangeAttackEvent.CallRangeAttackEvent(rangeWeaponPrefab, rangeWeaponPosition, transform.localScale, rangeWeaponSpeed);
+        player.candyCount--;
         yield return new WaitForSeconds(attackWaitTimer);
 
         EnablePlayer();

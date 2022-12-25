@@ -11,9 +11,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private CanvasGroup fadeScreen_2;
     [SerializeField] private RectTransform pausePanel;
 
-    #region Header HEARTS
+    #region Header PLAYER HEARTS
     [Space(10)]
-    [Header("HEARTS")]
+    [Header("PLAYER HEARTS")]
     #endregion
     [SerializeField] private Image heart_1;
     [SerializeField] private Image heart_2;
@@ -23,6 +23,21 @@ public class UIController : MonoBehaviour
     [SerializeField] private Sprite fullHeart;
     [SerializeField] private Sprite halfHeart;
     [SerializeField] private Sprite emptyHeart;
+
+    #region Header ENEMY HEARTS
+    [Space(10)]
+    [Header("ENEMY HEARTS")]
+    #endregion
+    [SerializeField] private Image enemyHeart_1;
+    [SerializeField] private Image enemyHeart_2;
+    [SerializeField] private Image enemyHeart_3;
+    [SerializeField] private Image enemyHeart_4;
+    [SerializeField] private Image enemyHeart_5;
+    [SerializeField] private Sprite enemyFullHeart;
+    [SerializeField] private Sprite enemyHalfHeart;
+    [SerializeField] private Sprite enemyEmptyHeart;
+
+    [SerializeField] private TextMeshProUGUI sugarCandyCount;
 
     private Player player;
     private Boss boss;
@@ -38,6 +53,7 @@ public class UIController : MonoBehaviour
         //player.healthEvent.OnHealthChanged += HealthEvent_OnHealthChanged;
         player.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyed;
         boss.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyedBoss;
+        boss.healthEvent.OnHealthChanged += HealthEvent_OnHealthChangedBoss;
     }
 
     private void OnDisable()
@@ -45,6 +61,7 @@ public class UIController : MonoBehaviour
         //player.healthEvent.OnHealthChanged -= HealthEvent_OnHealthChanged;
         player.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyed;
         boss.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyedBoss;
+        boss.healthEvent.OnHealthChanged -= HealthEvent_OnHealthChangedBoss;
     }
 
     private void Update()
@@ -54,6 +71,7 @@ public class UIController : MonoBehaviour
             if (GameManager.Instance.gameState == GameState.GamePaused) Resume();
             else Pause();
         }
+        sugarCandyCount.text = GameManager.Instance.GetPlayer().candyCount.ToString();
     }
 
     private void DestroyedEvent_OnDestroyedBoss(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
@@ -156,6 +174,100 @@ public class UIController : MonoBehaviour
                 heart_3.sprite = emptyHeart;
                 heart_4.sprite = emptyHeart;
                 heart_5.sprite = emptyHeart;
+                break;
+        }
+    }
+
+    private void HealthEvent_OnHealthChangedBoss(HealthEvent healthEvent, HealthEventArgs healthEventArgs)
+    {
+        switch (boss.GetCurrentHealth())
+        {
+            case 10:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyFullHeart;
+                enemyHeart_3.sprite = enemyFullHeart;
+                enemyHeart_4.sprite = enemyFullHeart;
+                enemyHeart_5.sprite = enemyFullHeart;
+                break;
+
+            case 9:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyFullHeart;
+                enemyHeart_3.sprite = enemyFullHeart;
+                enemyHeart_4.sprite = enemyFullHeart;
+                enemyHeart_5.sprite = enemyHalfHeart;
+                break;
+
+            case 8:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyFullHeart;
+                enemyHeart_3.sprite = enemyFullHeart;
+                enemyHeart_4.sprite = enemyFullHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
+                break;
+
+            case 7:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyFullHeart;
+                enemyHeart_3.sprite = enemyFullHeart;
+                enemyHeart_4.sprite = enemyHalfHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
+                break;
+
+            case 6:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyFullHeart;
+                enemyHeart_3.sprite = enemyFullHeart;
+                enemyHeart_4.sprite = enemyEmptyHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
+                break;
+
+            case 5:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyFullHeart;
+                enemyHeart_3.sprite = enemyHalfHeart;
+                enemyHeart_4.sprite = enemyEmptyHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
+                break;
+
+            case 4:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyFullHeart;
+                enemyHeart_3.sprite = enemyEmptyHeart;
+                enemyHeart_4.sprite = enemyEmptyHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
+                break;
+
+            case 3:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyHalfHeart;
+                enemyHeart_3.sprite = enemyEmptyHeart;
+                enemyHeart_4.sprite = enemyEmptyHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
+                break;
+
+            case 2:
+                enemyHeart_1.sprite = enemyFullHeart;
+                enemyHeart_2.sprite = enemyEmptyHeart;
+                enemyHeart_3.sprite = enemyEmptyHeart;
+                enemyHeart_4.sprite = enemyEmptyHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
+                break;
+
+            case 1:
+                enemyHeart_1.sprite = enemyHalfHeart;
+                enemyHeart_2.sprite = enemyEmptyHeart;
+                enemyHeart_3.sprite = enemyEmptyHeart;
+                enemyHeart_4.sprite = enemyEmptyHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
+                break;
+
+            case 0:
+                enemyHeart_1.sprite = enemyEmptyHeart;
+                enemyHeart_2.sprite = enemyEmptyHeart;
+                enemyHeart_3.sprite = enemyEmptyHeart;
+                enemyHeart_4.sprite = enemyEmptyHeart;
+                enemyHeart_5.sprite = enemyEmptyHeart;
                 break;
         }
     }
