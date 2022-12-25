@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DialogueLine_1
   m_EditorClassIdentifier: 
   speaker: Villain
-  speakerSprite: {fileID: 0}
+  speakerSprite: {fileID: 21300000, guid: 22d7d2a5f520f84499e94af1218ea3c5, type: 3}
   text: dasdkasodpasd
