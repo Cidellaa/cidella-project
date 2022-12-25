@@ -29,15 +29,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float meleeAttackRadius;
     [SerializeField] private LayerMask whatIsEnemy;
 
-    private readonly float attackWaitTimer = .75f;
+    public bool isBossFightTriggered;
+
+    private readonly float attackWaitTimer = .4f;
 
     private bool isPlayerMovementDisabled;
 
     private Player player;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
         player = GetComponent<Player>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -55,6 +59,7 @@ public class PlayerController : MonoBehaviour
 
     public void DisablePlayer()
     {
+        rb.velocity = Vector2.zero;
         isPlayerMovementDisabled = true;
     }
 
@@ -119,8 +124,11 @@ public class PlayerController : MonoBehaviour
         EnablePlayer();
     }
 
-    private void OnDrawGizmos()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Gizmos.DrawWireSphere(meleeAttackPosition.position, meleeAttackRadius);
+        if (collision.CompareTag("BossFightTrigger"))
+        {
+            isBossFightTriggered = true;
+        }
     }
 }

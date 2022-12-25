@@ -34,6 +34,7 @@ public class Health : MonoBehaviour
     {
         currentHealth = startingHealth;
         isDamageable = true;
+        CallHealthEvent(0);
     }
 
     private void Update()
@@ -69,6 +70,7 @@ public class Health : MonoBehaviour
             yield return null;
         }
         isDamageable = true;
+        immunityTime = 3;
     }
 
     public void AddHealth(int healthAmount)

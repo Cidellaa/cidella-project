@@ -14,6 +14,8 @@ using UnityEngine;
 [RequireComponent(typeof(DestroyedEvent))]
 [RequireComponent(typeof(MeleeAttack))]
 [RequireComponent(typeof(MeleeAttackEvent))]
+[RequireComponent(typeof(MovementToPosition))]
+[RequireComponent(typeof(MovementToPositionEvent))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AnimatePlayer))]
 [DisallowMultipleComponent]
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public HealthEvent healthEvent;
     [HideInInspector] public DestroyedEvent destroyedEvent;
     [HideInInspector] public MeleeAttackEvent meleeAttackEvent;
+    [HideInInspector] public MovementToPositionEvent movementToPositionEvent;
     [HideInInspector] public PlayerController playerController;
     [HideInInspector] public Animator anim;
 
@@ -38,7 +41,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform groundCheckPosition;
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private LayerMask whatIsGround;
-    
+
+    private int currentHealth;
+
     private void Awake()
     {
         idleEvent = GetComponent<IdleEvent>();
@@ -49,6 +54,7 @@ public class Player : MonoBehaviour
         healthEvent = GetComponent<HealthEvent>();
         destroyedEvent = GetComponent<DestroyedEvent>();
         meleeAttackEvent = GetComponent<MeleeAttackEvent>();
+        movementToPositionEvent = GetComponent<MovementToPositionEvent>();
         playerController = GetComponent<PlayerController>();
         anim = GetComponent<Animator>();
     }
@@ -65,6 +71,7 @@ public class Player : MonoBehaviour
 
     private void HealthEvent_OnHealthChanged(HealthEvent healthEvent, HealthEventArgs healthEventArgs)
     {
+        currentHealth = healthEventArgs.healthAmount;
         if (healthEventArgs.healthAmount <= 0)
             destroyedEvent.CallDestroyedEvent(true);
     }
@@ -72,5 +79,10 @@ public class Player : MonoBehaviour
     public bool OnGround()
     {
         return Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, whatIsGround);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 }
