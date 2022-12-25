@@ -12,8 +12,6 @@ public class GameManager : StaticMonoBehaviour<GameManager>
     public GameState gameState = GameState.GameStarted;
     public GameState previousGameState = GameState.GameStarted;
 
-    private bool isDialogueStarted;
-
     protected override void Awake()
     {
         base.Awake();
@@ -63,5 +61,10 @@ public class GameManager : StaticMonoBehaviour<GameManager>
     public Player GetPlayer()
     {
         return player;
+    }
+
+    public Boss GetBoss()
+    {
+        return boss;
     }
 }
