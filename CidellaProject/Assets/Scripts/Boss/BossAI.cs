@@ -44,20 +44,26 @@ public class BossAI : MonoBehaviour
     [SerializeField] private float moveSpeed = 15f;
 
     private bool isAttacking;
+    private bool isBossDisabled;
 
-    private Boss boss;
-    [SerializeField] private BossState bossState = BossState.Idle; // DELETE SERIALIZEFIELD LATER!!
     private Transform player;
+    [SerializeField] private BossState bossState = BossState.Idle;
+    private Boss boss;
+    private Rigidbody2D rb;
+    private Collider2D col;
 
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         boss = GetComponent<Boss>();
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void Update()
     {
+        if (isBossDisabled) return;
         HandleBossState();
     }
 
@@ -93,17 +99,15 @@ public class BossAI : MonoBehaviour
                 break;
 
             case BossState.BigCandiesAttack:
-                StartCoroutine(BigCandiesAttackRoutine());
                 if (!isAttacking) StartCoroutine(BigCandiesAttackRoutine());
                 break;
 
             case BossState.CallElves:
-                StartCoroutine(CallElvesRoutine());
                 if (!isAttacking) StartCoroutine(CallElvesRoutine());
                 break;
 
             case BossState.Death:
-
+                DisableBoss();
                 break;
         }
     }
@@ -212,4 +216,11 @@ public class BossAI : MonoBehaviour
         return callElvesTimer <= 0;
     }
     #endregion
+
+    public void DisableBoss()
+    {
+        isBossDisabled = true;
+        rb.gravityScale = 0f;
+        col.enabled = false;
+    }
 }

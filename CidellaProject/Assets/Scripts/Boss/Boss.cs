@@ -27,7 +27,10 @@ public class Boss : MonoBehaviour
     [HideInInspector] public MeleeAttackEvent meleeAttackEvent;
     [HideInInspector] public MovementToPositionEvent movementToPositionEvent;
     [HideInInspector] public DestroyedEvent destroyedEvent;
+    [HideInInspector] public HealthEvent healthEvent;
     [HideInInspector] public Animator anim;
+
+    private BossAI bossAI;
 
     private void Awake()
     {
@@ -37,6 +40,27 @@ public class Boss : MonoBehaviour
         meleeAttackEvent = GetComponent<MeleeAttackEvent>();
         movementToPositionEvent = GetComponent<MovementToPositionEvent>();
         destroyedEvent = GetComponent<DestroyedEvent>();
+        healthEvent = GetComponent<HealthEvent>();
         anim = GetComponent<Animator>();
+        bossAI = GetComponent<BossAI>();
+    }
+
+    private void OnEnable()
+    {
+        healthEvent.OnHealthChanged += HealthEvent_OnHealthChanged;
+    }
+
+    private void OnDisable()
+    {
+        healthEvent.OnHealthChanged -= HealthEvent_OnHealthChanged;
+    }
+
+    private void HealthEvent_OnHealthChanged(HealthEvent healthEvent, HealthEventArgs healthEventArgs)
+    {
+        if (healthEventArgs.healthAmount <= 0)
+        {
+            destroyedEvent.CallDestroyedEvent(true);
+            bossAI.DisableBoss();
+        }
     }
 }

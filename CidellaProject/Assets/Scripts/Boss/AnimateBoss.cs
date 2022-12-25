@@ -8,7 +8,6 @@ public class AnimateBoss : MonoBehaviour
 {
     private Boss boss;
 
-
     private void Awake()
     {
         boss = GetComponent<Boss>();
@@ -21,6 +20,7 @@ public class AnimateBoss : MonoBehaviour
         boss.rangeAttackEvent.OnRangeAttack += RangeAttackEvent_OnRangeAttack;
         boss.meleeAttackEvent.OnMeleeAttack += MeleeAttackEvent_OnMeleeAttack;
         boss.movementToPositionEvent.OnMovementToPosition += MovementToPositionEvent_OnMovementToPosition;
+        boss.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyed;
     }
 
     private void OnDisable()
@@ -57,6 +57,11 @@ public class AnimateBoss : MonoBehaviour
         SetMovementToPositionAnimationParameters();
     }
 
+    private void DestroyedEvent_OnDestroyed(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
+    {
+        SetDeathAnimationParameters();
+    }
+
     private void SetIdleAnimationParameters()
     {
         boss.anim.SetBool(Settings.isMoving, false);
@@ -88,5 +93,12 @@ public class AnimateBoss : MonoBehaviour
     {
         boss.anim.SetBool(Settings.isIdle, false);
         boss.anim.SetBool(Settings.isMoving, true);
+    }
+
+    private void SetDeathAnimationParameters()
+    {
+        boss.anim.SetBool(Settings.isIdle, false);
+        boss.anim.SetBool(Settings.isMoving, false);
+        boss.anim.SetBool(Settings.isDead, true);
     }
 }

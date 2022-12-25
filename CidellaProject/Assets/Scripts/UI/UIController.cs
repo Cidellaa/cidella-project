@@ -3,12 +3,26 @@ using UnityEngine;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
     [SerializeField] private CanvasGroup fadeScreen_1;
     [SerializeField] private CanvasGroup fadeScreen_2;
     [SerializeField] private RectTransform pausePanel;
+
+    #region Header HEARTS
+    [Space(10)]
+    [Header("HEARTS")]
+    #endregion
+    [SerializeField] private Image heart_1;
+    [SerializeField] private Image heart_2;
+    [SerializeField] private Image heart_3;
+    [SerializeField] private Image heart_4;
+    [SerializeField] private Image heart_5;
+    [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite halfHeart;
+    [SerializeField] private Sprite emptyHeart;
 
     private Player player;
     private Boss boss;
@@ -21,12 +35,14 @@ public class UIController : MonoBehaviour
 
     private void OnEnable()
     {
+        player.healthEvent.OnHealthChanged += HealthEvent_OnHealthChanged;
         player.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyed;
         boss.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyedBoss;
     }
 
     private void OnDisable()
     {
+        player.healthEvent.OnHealthChanged -= HealthEvent_OnHealthChanged;
         player.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyed;
         boss.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyedBoss;
     }
@@ -39,6 +55,100 @@ public class UIController : MonoBehaviour
     private void DestroyedEvent_OnDestroyed(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
     {
         StartCoroutine(FadeOutScreen());
+    }
+
+    private void HealthEvent_OnHealthChanged(HealthEvent healthEvent, HealthEventArgs healthEventArgs)
+    {
+        switch (player.GetCurrentHealth())
+        {
+            case 10:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = fullHeart;
+                heart_3.sprite = fullHeart;
+                heart_4.sprite = fullHeart;
+                heart_5.sprite = fullHeart;
+                break;
+
+            case 9:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = fullHeart;
+                heart_3.sprite = fullHeart;
+                heart_4.sprite = fullHeart;
+                heart_5.sprite = halfHeart;
+                break;
+
+            case 8:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = fullHeart;
+                heart_3.sprite = fullHeart;
+                heart_4.sprite = fullHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+
+            case 7:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = fullHeart;
+                heart_3.sprite = fullHeart;
+                heart_4.sprite = halfHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+
+            case 6:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = fullHeart;
+                heart_3.sprite = fullHeart;
+                heart_4.sprite = emptyHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+
+            case 5:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = fullHeart;
+                heart_3.sprite = halfHeart;
+                heart_4.sprite = emptyHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+
+            case 4:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = fullHeart;
+                heart_3.sprite = emptyHeart;
+                heart_4.sprite = emptyHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+
+            case 3:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = halfHeart;
+                heart_3.sprite = emptyHeart;
+                heart_4.sprite = emptyHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+
+            case 2:
+                heart_1.sprite = fullHeart;
+                heart_2.sprite = emptyHeart;
+                heart_3.sprite = emptyHeart;
+                heart_4.sprite = emptyHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+
+            case 1:
+                heart_1.sprite = halfHeart;
+                heart_2.sprite = emptyHeart;
+                heart_3.sprite = emptyHeart;
+                heart_4.sprite = emptyHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+
+            case 0:
+                heart_1.sprite = emptyHeart;
+                heart_2.sprite = emptyHeart;
+                heart_3.sprite = emptyHeart;
+                heart_4.sprite = emptyHeart;
+                heart_5.sprite = emptyHeart;
+                break;
+        }
     }
 
     private IEnumerator FadeOutScreen()

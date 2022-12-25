@@ -31,6 +31,8 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public DestroyedEvent destroyedEvent;
     [HideInInspector] public Animator anim;
 
+    private EnemyAI enemyAI;
+
     private void Awake()
     {
         idleEvent = GetComponent<IdleEvent>();
@@ -40,6 +42,26 @@ public class Enemy : MonoBehaviour
         meleeAttackEvent = GetComponent<MeleeAttackEvent>();
         destroyedEvent = GetComponent<DestroyedEvent>();
         anim = GetComponent<Animator>();
+        enemyAI = GetComponent<EnemyAI>();
+    }
+
+    private void OnEnable()
+    {
+        healthEvent.OnHealthChanged += HealthEvent_OnHealthChanged;
+    }
+
+    private void OnDisable()
+    {
+        healthEvent.OnHealthChanged -= HealthEvent_OnHealthChanged;
+    }
+
+    private void HealthEvent_OnHealthChanged(HealthEvent healthEvent, HealthEventArgs healthEventArgs)
+    {
+        if (healthEventArgs.healthAmount <= 0)
+        {
+            destroyedEvent.CallDestroyedEvent(true);
+            enemyAI.DisableEnemy();
+        }
     }
 
 }
