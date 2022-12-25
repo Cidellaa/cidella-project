@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class MainMenuController : MonoBehaviour
     [Space(10)]
     [Header("BUTTONS")]
     #endregion
+    [SerializeField] private RectTransform volumeButton;
     [SerializeField] private RectTransform playButton;
     [SerializeField] private RectTransform gameplayButton;
-    [SerializeField] private RectTransform settingsButton;
     [SerializeField] private RectTransform creditsButton;
     [SerializeField] private RectTransform quitButton;
 
@@ -21,17 +22,19 @@ public class MainMenuController : MonoBehaviour
     [Header("PANELS")]
     #endregion
     [SerializeField] private RectTransform gameplayPanel;
-    [SerializeField] private RectTransform settingsPanel;
     [SerializeField] private RectTransform creditsPanel;
 
     [Space(10)]
     [SerializeField] private CanvasGroup fadeScreen;
     [SerializeField] private CanvasGroup gameName;
+    [SerializeField] private AudioSource menuMusic;
+    [SerializeField] private Sprite volumeOffSprite;
+    [SerializeField] private Sprite volumeOnSprite;
 
     #region Timer Variables
     private readonly float buttonOpeningTimer = .6f;
     private readonly float fadeTimer = 2f;
-    private readonly float panelTimer = .75f;
+    private readonly float panelTimer = 2f;
     #endregion
 
     private void Start()
@@ -47,21 +50,21 @@ public class MainMenuController : MonoBehaviour
         gameName.DOFade(1f, fadeTimer);
         yield return new WaitForSeconds(fadeTimer);
         
-        playButton.DOScale(1f, buttonOpeningTimer).SetEase(Ease.InQuint);
+        playButton.DOScale(5f, buttonOpeningTimer).SetEase(Ease.InQuint);
         yield return new WaitForSeconds(buttonOpeningTimer);
         
-        gameplayButton.DOScale(1f, buttonOpeningTimer).SetEase(Ease.InQuint);
+        gameplayButton.DOScale(5f, buttonOpeningTimer).SetEase(Ease.InQuint);
         yield return new WaitForSeconds(buttonOpeningTimer);
         
-        settingsButton.DOScale(1f, buttonOpeningTimer).SetEase(Ease.InQuint);
+        creditsButton.DOScale(5f, buttonOpeningTimer).SetEase(Ease.InQuint);
         yield return new WaitForSeconds(buttonOpeningTimer);
         
-        creditsButton.DOScale(1f, buttonOpeningTimer).SetEase(Ease.InQuint);
+        quitButton.DOScale(5f, buttonOpeningTimer).SetEase(Ease.InQuint);
         yield return new WaitForSeconds(buttonOpeningTimer);
-        
-        quitButton.DOScale(1f, buttonOpeningTimer).SetEase(Ease.InQuint);
+
+        volumeButton.DOScale(1f, buttonOpeningTimer).SetEase(Ease.InQuint);
         yield return new WaitForSeconds(buttonOpeningTimer);
-        
+
         fadeScreen.blocksRaycasts = false;
     }
 
@@ -88,13 +91,6 @@ public class MainMenuController : MonoBehaviour
     public void Gameplay()
     {
         StartCoroutine(OpenPanelRoutine(gameplayPanel));
-    }
-    #endregion
-
-    #region Settings Button
-    public void Settings()
-    {
-        StartCoroutine(OpenPanelRoutine(settingsPanel));
     }
     #endregion
 
@@ -134,11 +130,28 @@ public class MainMenuController : MonoBehaviour
     private IEnumerator BackRoutine(RectTransform panel)
     {
         SoundEffectManager.Instance.PlaySoundEffect(0, 1f);
-        panel.DOScale(0f, panelTimer);
+        panel.DOMoveY(2000f, panelTimer);
         fadeScreen.DOFade(0f, panelTimer);
         yield return new WaitForSeconds(panelTimer);
         panel.gameObject.SetActive(false);
         fadeScreen.blocksRaycasts = false;
+    }
+    #endregion
+
+    #region Volume Button
+    public void VolumeOnOff()
+    {
+        SoundEffectManager.Instance.PlaySoundEffect(0, 1f);
+        if (volumeButton.GetComponent<Image>().sprite == volumeOnSprite)
+        {
+            //menuMusic.volume = 0;
+            volumeButton.GetComponent<Image>().sprite = volumeOffSprite;
+        }
+        else if (volumeButton.GetComponent<Image>().sprite == volumeOffSprite)
+        {
+            //menuMusic.volume = 1;
+            volumeButton.GetComponent<Image>().sprite = volumeOnSprite;
+        }
     }
     #endregion
 
@@ -151,7 +164,7 @@ public class MainMenuController : MonoBehaviour
         
         fadeScreen.blocksRaycasts = true;
         fadeScreen.DOFade(.5f, panelTimer);
-        panel.DOScale(1f, panelTimer).SetEase(Ease.OutQuint);
+        panel.DOMoveY(655f, panelTimer).SetEase(Ease.OutQuint);
     }
     #endregion
 
