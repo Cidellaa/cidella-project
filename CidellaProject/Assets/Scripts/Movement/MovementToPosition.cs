@@ -28,12 +28,22 @@ public class MovementToPosition : MonoBehaviour
 
     private void MovementToPositionEvent_OnMovementToPosition(MovementToPositionEvent movementToPositionEvent, MovementToPositionEventArgs movementToPositionEventArgs)
     {
-        MoveRigidbody(movementToPositionEventArgs.moveSpeed,movementToPositionEventArgs.currentPosition, movementToPositionEventArgs.targetPosition);
+        MoveRigidbody(movementToPositionEventArgs.moveSpeed, movementToPositionEventArgs.currentPosition, movementToPositionEventArgs.targetPosition);
+        Flip(movementToPositionEventArgs.targetPosition, movementToPositionEventArgs.currentPosition);
     }
 
     private void MoveRigidbody(float moveSpeed, Vector3 currentPosition, Vector3 targetPosition)
     {
         Vector2 unitVector = Vector3.Normalize(targetPosition - currentPosition);
-        rb.MovePosition(rb.position + (Time.fixedDeltaTime * moveSpeed * unitVector));
+        rb.MovePosition(new(rb.position.x + (Time.fixedDeltaTime * moveSpeed * unitVector.x), rb.position.y));
+    }
+
+    private void Flip(Vector3 targetPosition, Vector3 currentPosition)
+    {
+        if (targetPosition.x - currentPosition.x > 0)
+            transform.localScale = Vector3.one;
+        else if (targetPosition.x - currentPosition.x < 0)
+            transform.localScale = new(-1, 1, 1);
     }
 }
+

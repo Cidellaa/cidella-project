@@ -38,7 +38,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform groundCheckPosition;
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private LayerMask whatIsGround;
-    
+
+    private int currentHealth;
+
     private void Awake()
     {
         idleEvent = GetComponent<IdleEvent>();
@@ -65,6 +67,7 @@ public class Player : MonoBehaviour
 
     private void HealthEvent_OnHealthChanged(HealthEvent healthEvent, HealthEventArgs healthEventArgs)
     {
+        currentHealth = healthEventArgs.healthAmount;
         if (healthEventArgs.healthAmount <= 0)
             destroyedEvent.CallDestroyedEvent(true);
     }
@@ -72,5 +75,10 @@ public class Player : MonoBehaviour
     public bool OnGround()
     {
         return Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, whatIsGround);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 }

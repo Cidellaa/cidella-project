@@ -12,9 +12,9 @@ public class DialogueSystem : MonoBehaviour
 
     [SerializeField] private RectTransform dialoguePanel;
 
-    [SerializeField] private Image speakerImage;
-    [SerializeField] private TextMeshProUGUI speakerName;
-    [SerializeField] private TextMeshProUGUI speakerText;
+    private Image speakerImage;
+    private TextMeshProUGUI speakerName;
+    private TextMeshProUGUI speakerText;
 
     private readonly float dialoguePanelTimer = .5f;
     private int lineIndex = 0;
