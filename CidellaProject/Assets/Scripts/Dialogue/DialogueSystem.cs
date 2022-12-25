@@ -12,20 +12,20 @@ public class DialogueSystem : MonoBehaviour
 
     [SerializeField] private RectTransform dialoguePanel;
 
-    private Image speakerImage;
-    private TextMeshProUGUI speakerName;
-    private TextMeshProUGUI speakerText;
+    [SerializeField] private Image speakerImage;
+    [SerializeField] private TextMeshProUGUI speakerName;
+    [SerializeField] private TextMeshProUGUI speakerText;
 
     private readonly float dialoguePanelTimer = .5f;
     private int lineIndex = 0;
     private bool isTyping;
-    private bool isDialogueStarted;
+    public bool isDialogueStarted;
 
     private void Update()
     {
-        if (!isTyping && Input.GetKeyDown(KeyCode.Space))
+        if (!isTyping)
         {
-            if (isDialogueStarted)
+            if (isDialogueStarted && Input.GetKeyDown(KeyCode.Space))
             {
                 NextLine();
             }
@@ -82,6 +82,11 @@ public class DialogueSystem : MonoBehaviour
     private IEnumerator FinishDialogue()
     {
         lineIndex = 0;
+        if (GameManager.Instance.GetPlayer().playerController.isBossFightTriggered)
+        {
+            GameManager.Instance.previousGameState = GameManager.Instance.gameState;
+            GameManager.Instance.gameState = GameState.BossFight;
+        }
         isDialogueStarted = false;
         dialoguePanel.DOMoveY(-350f, dialoguePanelTimer);
         yield return new WaitForSeconds(dialoguePanelTimer);

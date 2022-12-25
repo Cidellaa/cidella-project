@@ -61,6 +61,13 @@ public class BossAI : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
+    private void Start()
+    {
+        isBossDisabled = true;
+        candiesPlaces.parent = null;
+        elvesPlaces.parent = null;
+    }
+
     private void Update()
     {
         if (isBossDisabled) return;
@@ -90,7 +97,6 @@ public class BossAI : MonoBehaviour
                 break;
 
             case BossState.MeleeAttack:
-
                 if (!isAttacking) StartCoroutine(MeleeAttackRoutine());
                 break;
 
@@ -222,5 +228,12 @@ public class BossAI : MonoBehaviour
         isBossDisabled = true;
         rb.gravityScale = 0f;
         col.enabled = false;
+    }
+
+    public void EnableBoss()
+    {
+        isBossDisabled = false;
+        rb.gravityScale = 1f;
+        col.enabled = true;
     }
 }

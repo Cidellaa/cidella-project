@@ -2,7 +2,8 @@ public enum GameState
 {
     GameStarted,
     GamePaused,
-    BossStage,
+    BossFight,
+    StartingBossStage,
     GameLost,
     GameWon,
     Dialogue

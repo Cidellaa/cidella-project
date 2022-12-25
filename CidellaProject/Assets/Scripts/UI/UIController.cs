@@ -35,16 +35,25 @@ public class UIController : MonoBehaviour
 
     private void OnEnable()
     {
-        player.healthEvent.OnHealthChanged += HealthEvent_OnHealthChanged;
+        //player.healthEvent.OnHealthChanged += HealthEvent_OnHealthChanged;
         player.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyed;
         boss.destroyedEvent.OnDestroyed += DestroyedEvent_OnDestroyedBoss;
     }
 
     private void OnDisable()
     {
-        player.healthEvent.OnHealthChanged -= HealthEvent_OnHealthChanged;
+        //player.healthEvent.OnHealthChanged -= HealthEvent_OnHealthChanged;
         player.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyed;
         boss.destroyedEvent.OnDestroyed -= DestroyedEvent_OnDestroyedBoss;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameManager.Instance.gameState == GameState.GamePaused) Resume();
+            else Pause();
+        }
     }
 
     private void DestroyedEvent_OnDestroyedBoss(DestroyedEvent destroyedEvent, DestroyedEventArgs destroyedEventArgs)
@@ -179,6 +188,9 @@ public class UIController : MonoBehaviour
 
     private IEnumerator PauseRoutine()
     {
+        GameManager.Instance.previousGameState = GameManager.Instance.gameState;
+        GameManager.Instance.gameState = GameState.GamePaused;
+     
         SoundEffectManager.Instance.PlaySoundEffect(0, 1);
         pausePanel.gameObject.SetActive(true);
         float scale = 0;
@@ -203,6 +215,9 @@ public class UIController : MonoBehaviour
 
     private IEnumerator ResumeRoutine()
     {
+        GameManager.Instance.gameState = GameManager.Instance.previousGameState;
+        GameManager.Instance.previousGameState = GameState.GamePaused;
+
         SoundEffectManager.Instance.PlaySoundEffect(0, 1);
         pausePanel.DOScale(0f, 1f);
         fadeScreen_1.DOFade(0f, 1f);

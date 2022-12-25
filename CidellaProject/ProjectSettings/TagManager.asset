@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Boss
   - Enemy
+  - BossFightTrigger
   layers:
   - Default
   - TransparentFX
@@ -19,8 +20,8 @@ TagManager:
   - Enemy
   - PlayerWeapon
   - Confiner
-  - 
-  - 
+  - Collectible
+  - BossFightTrigger
   - 
   - 
   - 
@@ -52,6 +53,12 @@ TagManager:
   - name: Instances
     uniqueID: 3126175515
     locked: 0
+  - name: Collectibles
+    uniqueID: 1484001007
+    locked: 0
   - name: Midground
     uniqueID: 2534032537
+    locked: 0
+  - name: SnowEffect
+    uniqueID: 3724128987
     locked: 0

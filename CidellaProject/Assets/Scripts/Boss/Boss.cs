@@ -29,8 +29,7 @@ public class Boss : MonoBehaviour
     [HideInInspector] public DestroyedEvent destroyedEvent;
     [HideInInspector] public HealthEvent healthEvent;
     [HideInInspector] public Animator anim;
-
-    private BossAI bossAI;
+    [HideInInspector] public BossAI bossAI;
 
     private void Awake()
     {

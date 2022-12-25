@@ -14,6 +14,8 @@ using UnityEngine;
 [RequireComponent(typeof(DestroyedEvent))]
 [RequireComponent(typeof(MeleeAttack))]
 [RequireComponent(typeof(MeleeAttackEvent))]
+[RequireComponent(typeof(MovementToPosition))]
+[RequireComponent(typeof(MovementToPositionEvent))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AnimatePlayer))]
 [DisallowMultipleComponent]
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public HealthEvent healthEvent;
     [HideInInspector] public DestroyedEvent destroyedEvent;
     [HideInInspector] public MeleeAttackEvent meleeAttackEvent;
+    [HideInInspector] public MovementToPositionEvent movementToPositionEvent;
     [HideInInspector] public PlayerController playerController;
     [HideInInspector] public Animator anim;
 
@@ -51,6 +54,7 @@ public class Player : MonoBehaviour
         healthEvent = GetComponent<HealthEvent>();
         destroyedEvent = GetComponent<DestroyedEvent>();
         meleeAttackEvent = GetComponent<MeleeAttackEvent>();
+        movementToPositionEvent = GetComponent<MovementToPositionEvent>();
         playerController = GetComponent<PlayerController>();
         anim = GetComponent<Animator>();
     }
